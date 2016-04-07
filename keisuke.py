@@ -93,9 +93,6 @@ def create_keisuke_puzzle_2(n):
 
 
 def keisuke_csp_model_1(initial_keisuke_board, horizontal, vertical):
-    
-
-
     csp = CSP("Keiuske_M1")
     n = len(initial_keisuke_board)
     variables = []
@@ -109,14 +106,20 @@ def keisuke_csp_model_1(initial_keisuke_board, horizontal, vertical):
     for i in range(len(vertical)):
         vertical_by_length[len(vertical[i])].append(vertical[i])
         
-    
+    # create domain
+    domain = set()
+    for i in range(len(horizontal)):
+	    domain = domain.union(set(horizontal[i]))
+    for i in range(len(vertical)):
+	    domain = domain.union(set(vertical[i]))  
+	    
     # create variables
     for i in range(n):
         variables.append([])
         for j in range(n):
             var = Variable("V{},{}".format(i,j))
             if initial_keisuke_board[i][j] == 0:
-                var.add_domain_values([i+1 for i in range(9)])
+                var.add_domain_values(domain)
             else:
                 var.add_domain_values([-1])
             variables[i].append(var)
@@ -132,13 +135,13 @@ def keisuke_csp_model_1(initial_keisuke_board, horizontal, vertical):
     for i in range(n):
         first_white_slot = 0
         for j in range(n):
+            if (j == 0 and initial_keisuke_board[i][j] == -1):
+                first_white_slot = 1
             if ((j == n-1 and initial_keisuke_board[i][j] != -1)
             or (j != n-1 and initial_keisuke_board[i][j+1] == -1)):
                 length = j - first_white_slot + 1
                 if length > 1:
                     con = Constraint("H", [variables[i][k] for k in range(first_white_slot, j+1)])
-                    #sat_list = horizontal_by_length[length]
-                    #con.add_satisfying_tuples([tuple(sat_list[k]) for k in range(len(sat_list))])
                     con.add_satisfying_tuples(horizontal_by_length[length])
                     csp.add_constraint(con)
                     horizontal_cons.append(con)
@@ -151,6 +154,9 @@ def keisuke_csp_model_1(initial_keisuke_board, horizontal, vertical):
     for i in range(n):
         first_white_slot = 0
         for j in range(n):
+
+            if (j == 0 and initial_keisuke_board[j][i] == -1):
+                first_white_slot = 1
             if ((j == n-1 and initial_keisuke_board[j][i] != -1)
             or (j != n-1 and initial_keisuke_board[j+1][i] == -1)):
                 length = j - first_white_slot + 1
@@ -162,9 +168,6 @@ def keisuke_csp_model_1(initial_keisuke_board, horizontal, vertical):
                     print(con, vertical_by_length[length])
                         
                 first_white_slot = j+2
-
-
-
 
     # create diff constraints
     # separate by length
@@ -221,16 +224,23 @@ def print_sudo_soln(var_array):
 	        print([var.get_assigned_value() for var in row])
 
 if __name__ == '__main__':
-    #p = create_keisuke_puzzle(5)
+    p = create_keisuke_puzzle(5)
+    """
     a=[[0, 0, 0, 0, 0], 
         [0, 0, -1, 0, -1], 
         [0, 0, 0, 0, 0], 
         [0, 0, 0, 0, 0], 
         [0, -1, 0, 0, 0]]
     b=[(3, 6, 2, 9, 5), (1, 4), (9, 7, 3, 2, 9), (4, 7, 4, 9, 1), (9, 4, 7)]
-    c=[(3, 1, 9, 4, 5), (6, 4, 7, 7), (3, 4, 9), (9, 5, 2, 9, 4), (9, 1, 7)]    
+    c=[(3, 1, 9, 4, 5), (6, 4, 7, 7), (3, 4, 9), (9, 5, 2, 9, 4), (9, 1, 7)]  
+    """
+  
+
+    #csp,var_array = keisuke_csp_model_1(a,b,c)
+
+    csp,var_array = keisuke_csp_model_1(p[0], p[1], p[2])
     
-    csp,var_array = keisuke_csp_model_1(a,b,c)
+    
     solver = BT(csp)
     print("GAC")
     solver.bt_search(prop_GAC)
