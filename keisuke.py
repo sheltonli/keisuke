@@ -137,7 +137,6 @@ def create_keisuke_puzzle_3(n):
 if __name__ == '__main__':
     create_keisuke_puzzle(5)
 
-=======
 
 def keisuke_csp_model_1(initial_keisuke_board, horizontal, vertical):
     csp = CSP("Keiuske_M1")
@@ -156,10 +155,10 @@ def keisuke_csp_model_1(initial_keisuke_board, horizontal, vertical):
     # create domain
     domain = set()
     for i in range(len(horizontal)):
-	    domain = domain.union(set(horizontal[i]))
+        domain = domain.union(set(horizontal[i]))
     for i in range(len(vertical)):
-	    domain = domain.union(set(vertical[i]))  
-	    
+        domain = domain.union(set(vertical[i]))
+
     # create variables
     for i in range(n):
         variables.append([])
@@ -268,7 +267,7 @@ def keisuke_csp_model_1(initial_keisuke_board, horizontal, vertical):
 
 def print_sudo_soln(var_array):
     for row in var_array:
-	        print([var.get_assigned_value() for var in row])
+        print([var.get_assigned_value() for var in row])
 
 if __name__ == '__main__':
     p = create_keisuke_puzzle(5)
