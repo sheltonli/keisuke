@@ -2,6 +2,56 @@ from random import choice, random
 from cspbase import *
 from propagators import *
 
+def create_keisuke_puzzle_hard(n, m):
+    possible_values = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    game_board = []
+    for i in range(1,n+1):
+        game_board.append([])
+        for j in range(1,n+1):
+            if i % (m+1) == 0 or j % (m+1) == 0:
+                game_board[i-1].append(-1)
+            else:
+                game_board[i-1].append(choice(possible_values))
+    horizontal = []
+    vertical = []
+
+    for row in game_board:
+        temp = ()
+        for item in row:
+            if item == -1:
+                if temp != () and len(temp) > 1:
+                    horizontal.append(temp)
+                temp = ()
+            else:
+                temp += (item,)
+        if temp != () and len(temp) > 1:
+            horizontal.append(temp)
+
+    for i in range(n):
+        temp = ()
+        for row in game_board:
+            if row[i] == -1:
+                if temp != () and len(temp) > 1:
+                    vertical.append(temp)
+                temp = ()
+            else:
+                temp += (row[i],)
+        if temp != () and len(temp) > 1:
+            vertical.append(temp)
+
+    final_board = [[item if item == -1 else 0 for item in row] for row in game_board]
+
+    print_sudo(game_board)
+    print("---------------")
+    print_sudo(final_board)
+    print("---------------")
+    print_sudo(horizontal)
+    print("---------------")
+    print_sudo(vertical)
+    return final_board, horizontal, vertical
+    
+
+
 def create_keisuke_puzzle(n):
     '''
     Creates a randomly valid keisuke puzzle that is of dimension n x n.
@@ -40,10 +90,13 @@ def create_keisuke_puzzle(n):
 
     final_board = [[item if item == -1 else 0 for item in row] for row in game_board]
 
-    print(game_board)
-    print(final_board)
-    print(horizontal)
-    print(vertical)
+    print_sudo(game_board)
+    print("---------------")
+    print_sudo(final_board)
+    print("---------------")
+    print_sudo(horizontal)
+    print("---------------")
+    print_sudo(vertical)
     return final_board, horizontal, vertical
 
 
@@ -221,10 +274,15 @@ def keisuke_csp_model_1(initial_keisuke_board, horizontal, vertical):
 
 def print_sudo_soln(var_array):
     for row in var_array:
-	        print([var.get_assigned_value() for var in row])
+        print([var.get_assigned_value() for var in row])
+
+def print_sudo(var_array):
+    for row in var_array:
+        print([var for var in row])
 
 if __name__ == '__main__':
-    p = create_keisuke_puzzle(5)
+    #p = create_keisuke_puzzle(10)
+    p = create_keisuke_puzzle_hard(10,2)
     """
     a=[[0, 0, 0, 0, 0], 
         [0, 0, -1, 0, -1], 
@@ -244,6 +302,6 @@ if __name__ == '__main__':
     solver = BT(csp)
     print("GAC")
     solver.bt_search(prop_GAC)
-    print("Solution")
-    print_sudo_soln(var_array)
-    print("===========")
+    #print("Solution")
+    #print_sudo_soln(var_array)
+    #print("===========")
