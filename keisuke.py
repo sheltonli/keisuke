@@ -137,8 +137,6 @@ def create_keisuke_puzzle_3(n):
 if __name__ == '__main__':
     create_keisuke_puzzle(5)
 
-=======
-
 def keisuke_csp_model_1(initial_keisuke_board, horizontal, vertical):
     csp = CSP("Keiuske_M1")
     n = len(initial_keisuke_board)
