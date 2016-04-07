@@ -41,15 +41,7 @@ def create_keisuke_puzzle_hard(n, m):
 
     final_board = [[item if item == -1 else 0 for item in row] for row in game_board]
 
-    print_sudo(game_board)
-    print("---------------")
-    print_sudo(final_board)
-    print("---------------")
-    print_sudo(horizontal)
-    print("---------------")
-    print_sudo(vertical)
     return final_board, horizontal, vertical
-    
 
 
 def create_keisuke_puzzle(n):
@@ -90,14 +82,8 @@ def create_keisuke_puzzle(n):
 
     final_board = [[item if item == -1 else 0 for item in row] for row in game_board]
 
-    print_sudo(game_board)
-    print("---------------")
-    print_sudo(final_board)
-    print("---------------")
-    print_sudo(horizontal)
-    print("---------------")
-    print_sudo(vertical)
     return final_board, horizontal, vertical
+
 
 def create_keisuke_puzzle_2(n):
     '''
@@ -244,7 +230,6 @@ def keisuke_csp_model_1(initial_keisuke_board, horizontal, vertical):
                     con.add_satisfying_tuples(horizontal_by_length[length])
                     csp.add_constraint(con)
                     horizontal_cons.append(con)
-                    print(con, horizontal_by_length[length])
                         
                 first_white_slot = j+2
 
@@ -264,7 +249,6 @@ def keisuke_csp_model_1(initial_keisuke_board, horizontal, vertical):
                     con.add_satisfying_tuples(vertical_by_length[length])
                     csp.add_constraint(con)
                     vertical_cons.append(con)
-                    print(con, vertical_by_length[length])
                         
                 first_white_slot = j+2
 
@@ -326,31 +310,3 @@ def print_sudo_soln(var_array):
 def print_sudo(var_array):
     for row in var_array:
         print([var for var in row])
-
-
-if __name__ == '__main__':
-    #p = create_keisuke_puzzle(10)
-    p = create_keisuke_puzzle_hard(10,2)
-    """
-    a=[[0, 0, 0, 0, 0], 
-        [0, 0, -1, 0, -1], 
-        [0, 0, 0, 0, 0], 
-        [0, 0, 0, 0, 0], 
-        [0, -1, 0, 0, 0]]
-    b=[(3, 6, 2, 9, 5), (1, 4), (9, 7, 3, 2, 9), (4, 7, 4, 9, 1), (9, 4, 7)]
-    c=[(3, 1, 9, 4, 5), (6, 4, 7, 7), (3, 4, 9), (9, 5, 2, 9, 4), (9, 1, 7)]  
-    """
-  
-
-    #csp,var_array = keisuke_csp_model_1(a,b,c)
-
-    csp,var_array = keisuke_csp_model_1(p[0], p[1], p[2])
-    
-    
-    solver = BT(csp)
-    print("GAC")
-    solver.bt_search(prop_GAC)
-    #print("Solution")
-    #print_sudo_soln(var_array)
-    #print("===========")
-
