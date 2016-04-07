@@ -14,27 +14,27 @@ def create_keisuke_puzzle(n):
     vertical = []
 
     for row in game_board:
-        temp = []
+        temp = ()
         for item in row:
             if item == -1:
-                if temp != [] and len(temp) > 1:
+                if temp != () and len(temp) > 1:
                     horizontal.append(temp)
-                temp = []
+                temp = ()
             else:
-                temp.append(item)
-        if temp != [] and len(temp) > 1:
+                temp += (item,)
+        if temp != () and len(temp) > 1:
             horizontal.append(temp)
 
     for i in range(n):
-        temp = []
+        temp = ()
         for row in game_board:
             if row[i] == -1:
-                if temp != [] and len(temp) > 1:
+                if temp != () and len(temp) > 1:
                     vertical.append(temp)
-                temp = []
+                temp = ()
             else:
-                temp.append(row[i])
-        if temp != [] and len(temp) > 1:
+                temp += (row[i],)
+        if temp != () and len(temp) > 1:
             vertical.append(temp)
 
     final_board = [[item if item == -1 else 0 for item in row] for row in game_board]
@@ -63,27 +63,27 @@ def create_keisuke_puzzle_2(n):
     vertical = []
 
     for row in game_board:
-        temp = []
+        temp = ()
         for item in row:
             if item == -1:
-                if temp != [] and len(temp) > 1:
+                if temp != () and len(temp) > 1:
                     horizontal.append(temp)
-                temp = []
+                temp = ()
             else:
-                temp.append(item)
-        if temp != [] and len(temp) > 1:
+                temp += (item,)
+        if temp != () and len(temp) > 1:
             horizontal.append(temp)
 
     for i in range(n):
-        temp = []
+        temp = ()
         for row in game_board:
             if row[i] == -1:
-                if temp != [] and len(temp) > 1:
+                if temp != () and len(temp) > 1:
                     vertical.append(temp)
-                temp = []
+                temp = ()
             else:
-                temp.append(row[i])
-        if temp != [] and len(temp) > 1:
+                temp += (row[i],)
+        if temp != () and len(temp) > 1:
             vertical.append(temp)
 
     final_board = [[item if item == -1 else 0 for item in row] for row in game_board]
@@ -92,4 +92,3 @@ def create_keisuke_puzzle_2(n):
 
 if __name__ == '__main__':
     create_keisuke_puzzle(5)
-    # create_keisuke_puzzle_2(5)
