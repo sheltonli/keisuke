@@ -78,3 +78,6 @@ if __name__=="__main__":
 	for ls_var in create_var_ls_ls(keisuke_board, horizontal , vertical):
 		for var in ls_var:
 			var.print_all()
+
+
+	csp = CSP("Version-2", ls_var)
