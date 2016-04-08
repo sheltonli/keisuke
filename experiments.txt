@@ -1,0 +1,208 @@
+0.003145000000000002 0.0028109999999999975 0.0030620000000000057 0.001233000000000005 0.0012750000000000053
+0.008033999999999996 0.023708999999999994 0.008919000000000003 0.011526999999999996 0.008515000000000002
+0.12858999999999998 0.148846 0.42190599999999995 0.08337499999999999 0.06120899999999999
+1.170636 0.778528 0.9488149999999999 1.043164 1.001252
+4.627855 5.1787220000000005 4.8169699999999995 4.948488 3.731706
+17.698765 16.760312000000003 15.677735 22.960976999999996 20.597310999999998
+50.810019 54.82717 46.591865 55.591741 51.236228999999994
+
+
+0.0023052
+0.0121408
+0.1687852
+0.988479
+4.6607482
+18.73902
+51.8114048
+
+
+HARD PUZZLE
+
+2, 2
+    0.0004909999999999984
+    Search made 4 variable assignments and pruned 12 variable values
+
+    0.000447999999999997
+    Search made 4 variable assignments and pruned 8 variable values
+
+    0.0004529999999999951
+    Search made 4 variable assignments and pruned 8 variable values
+
+    0.0008100000000000017
+    Search made 4 variable assignments and pruned 8 variable values
+
+    0.0007180000000000034
+    Search made 4 variable assignments and pruned 12 variable values
+
+5, 2
+    0.021574000000000003
+    Search made 25 variable assignments and pruned 112 variable values
+
+    0.022332000000000005
+    Search made 25 variable assignments and pruned 112 variable values
+
+    0.02382
+    Search made 25 variable assignments and pruned 96 variable values
+
+    0.020952
+    Search made 25 variable assignments and pruned 112 variable values
+
+    0.02617
+    Search made 25 variable assignments and pruned 80 variable values
+
+8, 2 
+    0.48352799999999996
+    Search made 65 variable assignments and pruned 390 variable values
+
+    0.40334
+    Search made 64 variable assignments and pruned 288 variable values
+
+    0.748708
+    Search made 68 variable assignments and pruned 860 variable values
+
+    0.6225419999999999
+    Search made 68 variable assignments and pruned 767 variable values
+
+    0.611085
+    Search made 65 variable assignments and pruned 369 variable values
+
+11, 2
+    5.513966
+    Search made 126 variable assignments and pruned 827 variable values
+
+    8.467583999999999
+    Search made 137 variable assignments and pruned 3234 variable values
+
+    41.419291
+    Search made 228 variable assignments and pruned 14199 variable values
+
+    5.213675
+    Search made 121 variable assignments and pruned 381 variable values
+
+    38.48626599999999
+    Search made 207 variable assignments and pruned 15061 variable values
+
+14, 2
+    39.137204000000004
+    Search made 234 variable assignments and pruned 2585 variable values
+
+    26.653716000000003
+    Search made 201 variable assignments and pruned 837 variable values
+
+    63.29923699999999
+    Search made 283 variable assignments and pruned 3374 variable values
+
+    14.465537999999999
+    Search made 196 variable assignments and pruned 584 variable values
+
+    45.564522000000004
+    Search made 234 variable assignments and pruned 4396 variable values
+
+17, 2
+    101.25164699999999
+    Search made 311 variable assignments and pruned 1722 variable values
+
+    116.58971600000001
+    Search made 301 variable assignments and pruned 2221 variable values
+
+    126.362119
+    Search made 303 variable assignments and pruned 3092 variable values
+
+
+REGULAR PUZZLE
+2
+0.0005889999999999992
+Search made 4 variable assignments and pruned 12 variable values
+
+0.00016299999999998954
+Search made 4 variable assignments and pruned 6 variable values
+
+0.0004689999999999972
+Search made 4 variable assignments and pruned 12 variable values
+
+5
+0.009998
+Search made 25 variable assignments and pruned 147 variable values
+
+0.006663000000000002
+Search made 25 variable assignments and pruned 133 variable values
+
+0.017744000000000003
+Search made 25 variable assignments and pruned 161 variable values
+
+8
+0.036836999999999995
+Search made 64 variable assignments and pruned 440 variable values
+
+0.050927
+Search made 64 variable assignments and pruned 456 variable values
+
+0.07102399999999999
+Search made 64 variable assignments and pruned 456 variable values
+
+11
+0.26771399999999995
+Search made 121 variable assignments and pruned 880 variable values
+
+0.552379
+Search made 121 variable assignments and pruned 928 variable values
+
+0.237591
+Search made 121 variable assignments and pruned 864 variable values
+
+14
+0.421077
+Search made 196 variable assignments and pruned 1376 variable values
+
+0.28704799999999997
+Search made 196 variable assignments and pruned 1360 variable values
+
+0.354302
+Search made 196 variable assignments and pruned 1416 variable values
+
+17
+0.7571060000000001
+Search made 289 variable assignments and pruned 2080 variable values
+
+0.6301519999999999
+Search made 289 variable assignments and pruned 2056 variable values
+
+1.2942
+Search made 289 variable assignments and pruned 2128 variable values
+
+FC VS GAC
+
+GAC
+0.013747999999999996
+Search made 16 variable assignments and pruned 112 variable values
+
+0.012015999999999999
+Search made 16 variable assignments and pruned 112 variable values
+
+0.007835000000000002
+Search made 16 variable assignments and pruned 105 variable values
+
+0.0043230000000000005
+Search made 16 variable assignments and pruned 98 variable values
+
+0.012067000000000001
+Search made 16 variable assignments and pruned 96 variable values
+
+FC
+0.185103
+Search made 6282 variable assignments and pruned 37708 variable values
+
+9.811286999999998
+Search made 356633 variable assignments and pruned 2155076 variable values
+
+0.25349700000000003
+Search made 8747 variable assignments and pruned 52900 variable values
+
+0.157246
+Search made 5338 variable assignments and pruned 32393 variable values
+
+5.75373
+Search made 176613 variable assignments and pruned 1437103 variable values
+
+
+
