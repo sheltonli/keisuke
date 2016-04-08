@@ -2,6 +2,11 @@ from random import choice, random
 from cspbase import *
 from propagators import *
 
+
+def print_sudo(var_array):
+    for row in var_array:
+        print([var for var in row])
+
 def create_keisuke_puzzle_hard(n, m):
     possible_values = [1, 2, 3, 4, 5, 6, 7, 8, 9]
     game_board = []
@@ -187,8 +192,6 @@ def create_keisuke_puzzle_3(n):
 
     return game_board, horizontal, vertical
 
-if __name__ == '__main__':
-    create_keisuke_puzzle(5)
 
 
 def keisuke_csp_model_1(initial_keisuke_board, horizontal, vertical):
@@ -323,14 +326,11 @@ def print_sudo_soln(var_array):
         print([var.get_assigned_value() for var in row])
 
 
-def print_sudo(var_array):
-    for row in var_array:
-        print([var for var in row])
 
 
 if __name__ == '__main__':
-    #p = create_keisuke_puzzle(10)
-    p = create_keisuke_puzzle_hard(10,2)
+    #p = create_keisuke_puzzle(5)
+    #p = create_keisuke_puzzle_hard(11,2)
     """
     a=[[0, 0, 0, 0, 0], 
         [0, 0, -1, 0, -1], 
@@ -344,12 +344,12 @@ if __name__ == '__main__':
 
     #csp,var_array = keisuke_csp_model_1(a,b,c)
 
-    csp,var_array = keisuke_csp_model_1(p[0], p[1], p[2])
+    #csp,var_array = keisuke_csp_model_1(p[0], p[1], p[2])
     
     
-    solver = BT(csp)
-    print("GAC")
-    solver.bt_search(prop_GAC)
+    #solver = BT(csp)
+    #print("GAC")
+    #solver.bt_search(prop_GAC)
     #print("Solution")
     #print_sudo_soln(var_array)
     #print("===========")
