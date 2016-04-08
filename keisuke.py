@@ -41,15 +41,7 @@ def create_keisuke_puzzle_hard(n, m):
 
     final_board = [[item if item == -1 else 0 for item in row] for row in game_board]
 
-    print_sudo(game_board)
-    print("---------------")
-    print_sudo(final_board)
-    print("---------------")
-    print_sudo(horizontal)
-    print("---------------")
-    print_sudo(vertical)
     return final_board, horizontal, vertical
-    
 
 
 def create_keisuke_puzzle(n):
@@ -90,13 +82,6 @@ def create_keisuke_puzzle(n):
 
     final_board = [[item if item == -1 else 0 for item in row] for row in game_board]
 
-    print_sudo(game_board)
-    print("---------------")
-    print_sudo(final_board)
-    print("---------------")
-    print_sudo(horizontal)
-    print("---------------")
-    print_sudo(vertical)
     return final_board, horizontal, vertical
 
 def create_keisuke_puzzle_2(n):
