@@ -129,6 +129,7 @@ def create_keisuke_puzzle_2(n):
     return final_board, horizontal, vertical
 
 
+
 def keisuke_csp_model_1(initial_keisuke_board, horizontal, vertical):
     csp = CSP("Keiuske_M1")
     n = len(initial_keisuke_board)
@@ -142,7 +143,8 @@ def keisuke_csp_model_1(initial_keisuke_board, horizontal, vertical):
     vertical_by_length = [[] for i in range(n+1)];
     for i in range(len(vertical)):
         vertical_by_length[len(vertical[i])].append(vertical[i])
-        
+    
+    
     # create domain
     domain = set()
     for i in range(len(horizontal)):
@@ -179,6 +181,7 @@ def keisuke_csp_model_1(initial_keisuke_board, horizontal, vertical):
                 length = j - first_white_slot + 1
                 if length > 1:
                     con = Constraint("H", [variables[i][k] for k in range(first_white_slot, j+1)])
+
                     con.add_satisfying_tuples(horizontal_by_length[length])
                     csp.add_constraint(con)
                     horizontal_cons.append(con)
@@ -198,6 +201,7 @@ def keisuke_csp_model_1(initial_keisuke_board, horizontal, vertical):
                 length = j - first_white_slot + 1
                 if length > 1:
                     con = Constraint("C", [variables[k][i] for k in range(first_white_slot, j+1)])
+
                     con.add_satisfying_tuples(vertical_by_length[length])
                     csp.add_constraint(con)
                     vertical_cons.append(con)
@@ -214,7 +218,7 @@ def keisuke_csp_model_1(initial_keisuke_board, horizontal, vertical):
     for i in range(len(vertical_cons)):
         vertical_cons_length[len(vertical_cons[i].get_scope())].append(vertical_cons[i])   
         
-        
+    
     # create binary difference between two same length horizontal
     for i in range(2, len(horizontal_cons_length)):
         same_length_cons = horizontal_cons_length[i]
@@ -227,9 +231,10 @@ def keisuke_csp_model_1(initial_keisuke_board, horizontal, vertical):
                 # create a list of satisfiable tuples
                 sat_tuple = []
                 for l in range(len(horizontal_by_length[i])):
-                    for m in range(l+1, len(horizontal_by_length[i])):
-                        sat_tuple.append(horizontal_by_length[i][l] + horizontal_by_length[i][m])
-                
+                    for m in range(len(horizontal_by_length[i])):
+                        if (l != m):
+                            sat_tuple.append(horizontal_by_length[i][l] + horizontal_by_length[i][m])
+
                 con.add_satisfying_tuples(sat_tuple)
                 csp.add_constraint(con)
         
@@ -245,9 +250,10 @@ def keisuke_csp_model_1(initial_keisuke_board, horizontal, vertical):
                 # create a list of satisfiable tuples
                 sat_tuple = []
                 for l in range(len(vertical_by_length[i])):
-                    for m in range(l+1, len(vertical_by_length[i])):
-                        sat_tuple.append(vertical_by_length[i][l] + vertical_by_length[i][m])
-                
+                    for m in range(len(vertical_by_length[i])):
+                        if (l != m):
+                            sat_tuple.append(vertical_by_length[i][l] + vertical_by_length[i][m])
+
                 con.add_satisfying_tuples(sat_tuple)
                 csp.add_constraint(con)
                 
