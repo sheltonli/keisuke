@@ -1,6 +1,6 @@
 # keisuke
 
-The keisuke csp model is in keisuke.py. The keisuke_csp function sets up Keisuke as a CSP.
+The keisuke CSP model is in keisuke.py. The keisuke_csp function sets up Keisuke as a CSP.
 The random puzzle generators are in keisuke_sample_test.py.
 
 In order to run the code, it is recommended to run the keisuke_sample_run.py file. There
