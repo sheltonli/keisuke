@@ -99,6 +99,9 @@ def add_bin_intersection_constraints(csp, ls_var):
 	ls_intersect_pairs = [(pair, find_intersect(pair[0], pair[1]))\
 						 for pair in ls_varpairs if find_intersect(pair[0], pair[1]) != None]
 
+	for pair in ls_intersect_pairs:
+		print(pair, pair[0][1].cur_domain(), pair[0][1].cur_domain())
+
 	i = 0
 	for p in ls_intersect_pairs:
 		pair, coord = p
@@ -107,7 +110,7 @@ def add_bin_intersection_constraints(csp, ls_var):
 		coord1 = [c for c in get_all_coord(v1) if c == coord][0]
 		coord2 = [c for c in get_all_coord(v2) if c == coord][0]
 
-		cons = Constraint("int-{}".format(i), [pair[0], pair[1]])		
+		cons = Constraint("int-{}".format(i), [v1, v2])
 		sat_tuples = []
 
 		for val1 in v1.cur_domain():
@@ -119,20 +122,73 @@ def add_bin_intersection_constraints(csp, ls_var):
 				value1 = int(str(val1)[abs(coord[0]-coord1[0])+abs(coord[1]-coord1[1])])
 				value2 = int(str(val2)[abs(coord[0]-coord2[0])+abs(coord[1]-coord2[1])])
 				if value1==value2:
-					print("{}:{} x {}:{}".format(v1.name, v1.cur_domain(), v2.name, v2.cur_domain()))
-					print("{}: {}=={}".format(coord, value1, value2))
-					print("sat_tuple: ", (val1, val2))
+					# print("{}:{} x {}:{}".format(v1.name, v1.cur_domain(), v2.name, v2.cur_domain()))
+					# print("{}: {}=={}".format(coord, value1, value2))
+					# print("sat_tuple: ", (val1, val2))
 					sat_tuples.append((val1, val2))
-				else:
-					print("{}:{} x {}:{}".format(v1.name, v1.cur_domain(), v2.name, v2.cur_domain()))
-					print("{}: {}!={}".format(coord, value1, value2))
-					print("sat_tuple: ", (val1, val2))
+				# else:
+				# 	print("{}:{} x {}:{}".format(v1.name, v1.cur_domain(), v2.name, v2.cur_domain()))
+				# 	print("{}: {}!={}".format(coord, value1, value2))
+				# 	print("sat_tuple: ", (val1, val2))
 					# assert(False)
 				# sat_tuples.append((val1, val2))
-		assert(len(sat_tuples)!=0)
+		# assert(len(sat_tuples)!=0)
 		cons.add_satisfying_tuples(sat_tuples)
 		csp.add_constraint(cons)
 		i += 1
+
+def add_bin_constraint(csp, board, ls_var, horizontal, vertical):
+	board_size = len(board)	
+	map_hr_cons = {len(str(var.cur_domain()[0])): [] for var in ls_var}
+	map_vr_cons = {len(str(var.cur_domain()[0])): [] for var in ls_var}
+
+	horizontal = [int("".join([str(n) for n in tup])) for tup in horizontal]
+	vertical = [int("".join([str(n) for n in tup])) for tup in vertical]
+
+	for var in ls_var:
+		if var.name[0]=="H":
+			var_length = len(str(var.cur_domain()[0]))
+			map_hr_cons[var_length].append(var)
+		else:
+			var_length = len(str(var.cur_domain()[0]))
+			map_vr_cons[var_length].append(var)
+
+	# horizontal constraints
+	for length in map_hr_cons:
+		scope = map_hr_cons[length]
+		if scope!=[]:
+			cons = Constraint("H{}".format(length), scope)
+			
+			# add sat_tuples
+			ls_tuples = [tup for tup in horizontal if len(str(tup))==length]
+			all_tuples = [c for c in itertools.permutations(ls_tuples, 2)]		
+			# if all_tuples==[]:
+			# 	all_tuples = [(scope[0].cur_domain(),)]
+			cons.add_satisfying_tuples(all_tuples)
+			csp.add_constraint(cons)		
+
+			print(cons)
+			print(all_tuples)
+		# if all_tuples==[]:
+		# 	print("\t", scope[0].cur_domain())
+
+	# vertical constraints
+	for length in map_vr_cons:
+		scope = map_vr_cons[length]
+		if scope!=[]:
+			cons = Constraint("V{}".format(length), scope)
+
+			# add sat_tuples
+			ls_tuples = [tup for tup in vertical if len(str(tup))==length]
+			all_tuples = [c for c in itertools.permutations(ls_tuples, 2)]
+			# if all_tuples==[]:
+			# 	all_tuples = [(scope[0].cur_domain(),)]
+
+			print(cons)
+			print(all_tuples)
+
+			cons.add_satisfying_tuples(all_tuples)
+			csp.add_constraint(cons)
 
 if __name__=="__main__":
 
@@ -160,10 +216,11 @@ if __name__=="__main__":
 	# 	print(pair)
 
 	csp = CSP("Version-2", ls_var)	
-	add_bin_intersection_constraints(csp, ls_var)
+	# add_bin_intersection_constraints(csp, ls_var)
+	add_bin_constraint(csp, keisuke_board, ls_var, horizontal, vertical)
 
 	solver = BT(csp)
-	print("GAC")
+	print("BT")
 	solver.bt_search(prop_BT)
 	for var in ls_var:
 		# print(var)
@@ -172,14 +229,14 @@ if __name__=="__main__":
 	csp.print_soln()
 
 	ls_cons = csp.get_all_cons()
-	for cons in ls_cons:
-		print(cons.name)
-		print(cons.get_scope())
-		for var in cons.get_scope():
-			var.print_all()
-		for sat_tuple in cons.sat_tuples.keys():
-			print(sat_tuple)
-		print("")
+	# for cons in ls_cons:
+	# 	print(cons.name)
+	# 	print(cons.get_scope())
+	# 	for var in cons.get_scope():
+	# 		var.print_all()
+	# 	for sat_tuple in cons.sat_tuples.keys():
+	# 		print(sat_tuple)
+	# 	print("")
 	# print("Solution")
 	# print_sudo_soln(ls_var)
 	# print("===========")
