@@ -2,140 +2,24 @@ from random import choice, random
 from cspbase import *
 
 
-def create_keisuke_puzzle_hard(n, m):
-    possible_values = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-    game_board = []
-    for i in range(1,n+1):
-        game_board.append([])
-        for j in range(1,n+1):
-            if i % (m+1) == 0 or j % (m+1) == 0:
-                game_board[i-1].append(-1)
-            else:
-                game_board[i-1].append(choice(possible_values))
-    horizontal = []
-    vertical = []
-
-    for row in game_board:
-        temp = ()
-        for item in row:
-            if item == -1:
-                if temp != () and len(temp) > 1:
-                    horizontal.append(temp)
-                temp = ()
-            else:
-                temp += (item,)
-        if temp != () and len(temp) > 1:
-            horizontal.append(temp)
-
-    for i in range(n):
-        temp = ()
-        for row in game_board:
-            if row[i] == -1:
-                if temp != () and len(temp) > 1:
-                    vertical.append(temp)
-                temp = ()
-            else:
-                temp += (row[i],)
-        if temp != () and len(temp) > 1:
-            vertical.append(temp)
-
-    final_board = [[item if item == -1 else 0 for item in row] for row in game_board]
-
-    return final_board, horizontal, vertical
-
-
-def create_keisuke_puzzle(n):
+def keisuke_csp(initial_keisuke_board, horizontal, vertical):
     '''
-    Creates a randomly valid keisuke puzzle that is of dimension n x n.
-    Will return a list representation of the puzzle along with a horizontal and vertical list of numeric values.
+    Return a CSP object that represents keisuke and an array of variables.
+    Each variable represents a cell in the puzzle.
+    There are two types of constraints.
+    The first is the size and orientation constraint. The satisfying values for
+    this constraint is the numeric values that match the size and orientation of
+    the subsection.
+    The second type of constraint is similar to the binary alldifferent constraint.
+    These will be constraints between all combinations of two subsections that
+    have the same size and orientation to ensure that every numeric value
+    is used for only one subsection.
     '''
-
-    possible_values = [-1, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-    game_board = [[choice(possible_values) for x in range (n)] for y in range(n)]
-
-    horizontal = []
-    vertical = []
-
-    for row in game_board:
-        temp = ()
-        for item in row:
-            if item == -1:
-                if temp != () and len(temp) > 1:
-                    horizontal.append(temp)
-                temp = ()
-            else:
-                temp += (item,)
-        if temp != () and len(temp) > 1:
-            horizontal.append(temp)
-
-    for i in range(n):
-        temp = ()
-        for row in game_board:
-            if row[i] == -1:
-                if temp != () and len(temp) > 1:
-                    vertical.append(temp)
-                temp = ()
-            else:
-                temp += (row[i],)
-        if temp != () and len(temp) > 1:
-            vertical.append(temp)
-
-    final_board = [[item if item == -1 else 0 for item in row] for row in game_board]
-
-    return final_board, horizontal, vertical
-
-def create_keisuke_puzzle_2(n):
-    '''
-    Creates a randomly valid keisuke puzzle that is of dimension n x n.
-    Will return a list representation of the puzzle along with the list of numeric values.
-
-    Possible version where we adjust the occurrence of black squares.
-    '''
-
-    quarter = n / 4
-    percent = quarter / n
-    possible_values = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-    game_board = [[choice(possible_values) if random() >= percent else -1 for x in range (n)] for y in range(n)]
-
-    horizontal = []
-    vertical = []
-
-    for row in game_board:
-        temp = ()
-        for item in row:
-            if item == -1:
-                if temp != () and len(temp) > 1:
-                    horizontal.append(temp)
-                temp = ()
-            else:
-                temp += (item,)
-        if temp != () and len(temp) > 1:
-            horizontal.append(temp)
-
-    for i in range(n):
-        temp = ()
-        for row in game_board:
-            if row[i] == -1:
-                if temp != () and len(temp) > 1:
-                    vertical.append(temp)
-                temp = ()
-            else:
-                temp += (row[i],)
-        if temp != () and len(temp) > 1:
-            vertical.append(temp)
-
-    final_board = [[item if item == -1 else 0 for item in row] for row in game_board]
-
-    return final_board, horizontal, vertical
-
-
-
-def keisuke_csp_model_1(initial_keisuke_board, horizontal, vertical):
     csp = CSP("Keiuske_M1")
     n = len(initial_keisuke_board)
     variables = []
     
-    # separate constraints in length
+    # separate constraints by length
     horizontal_by_length = [[] for i in range(n+1)];
     for i in range(len(horizontal)):
         horizontal_by_length[len(horizontal[i])].append(horizontal[i])
@@ -165,10 +49,10 @@ def keisuke_csp_model_1(initial_keisuke_board, horizontal, vertical):
             csp.add_var(var)
                 
                 
-    # create constraints
+    ############### create constraints #############
     
-    horizontal_cons = []
-    vertical_cons = []
+    row_constraints = [] 
+    column_constraints = []
     
     # create row constraints
     for i in range(n):
@@ -181,10 +65,9 @@ def keisuke_csp_model_1(initial_keisuke_board, horizontal, vertical):
                 length = j - first_white_slot + 1
                 if length > 1:
                     con = Constraint("H", [variables[i][k] for k in range(first_white_slot, j+1)])
-
                     con.add_satisfying_tuples(horizontal_by_length[length])
                     csp.add_constraint(con)
-                    horizontal_cons.append(con)
+                    row_constraints.append(con)
                         
                 first_white_slot = j+2
 
@@ -193,7 +76,6 @@ def keisuke_csp_model_1(initial_keisuke_board, horizontal, vertical):
     for i in range(n):
         first_white_slot = 0
         for j in range(n):
-
             if (j == 0 and initial_keisuke_board[j][i] == -1):
                 first_white_slot = 1
             if ((j == n-1 and initial_keisuke_board[j][i] != -1)
@@ -201,27 +83,26 @@ def keisuke_csp_model_1(initial_keisuke_board, horizontal, vertical):
                 length = j - first_white_slot + 1
                 if length > 1:
                     con = Constraint("C", [variables[k][i] for k in range(first_white_slot, j+1)])
-
                     con.add_satisfying_tuples(vertical_by_length[length])
                     csp.add_constraint(con)
-                    vertical_cons.append(con)
+                    column_constraints.append(con)
                         
                 first_white_slot = j+2
 
-    # create diff constraints
-    # separate by length
-    horizontal_cons_length = [[] for i in range(n+1)]
-    for i in range(len(horizontal_cons)):
-        horizontal_cons_length[len(horizontal_cons[i].get_scope())].append(horizontal_cons[i])
+    # create alldiff constraints
+    # separate constraints by length
+    row_cons_length = [[] for i in range(n+1)]
+    for i in range(len(row_constraints)):
+        row_cons_length[len(row_constraints[i].get_scope())].append(row_constraints[i])
         
-    vertical_cons_length = [[] for i in range(n+1)]
-    for i in range(len(vertical_cons)):
-        vertical_cons_length[len(vertical_cons[i].get_scope())].append(vertical_cons[i])   
+    column_cons_length = [[] for i in range(n+1)]
+    for i in range(len(column_constraints)):
+        column_cons_length[len(column_constraints[i].get_scope())].append(column_constraints[i])   
         
     
-    # create binary difference between two same length horizontal
-    for i in range(2, len(horizontal_cons_length)):
-        same_length_cons = horizontal_cons_length[i]
+    # create binary difference between two same length horizontal subsections
+    for i in range(2, len(row_cons_length)):
+        same_length_cons = row_cons_length[i]
         
         for j in range(len(same_length_cons)):
             for k in range(j+1, len(same_length_cons)):
@@ -238,9 +119,9 @@ def keisuke_csp_model_1(initial_keisuke_board, horizontal, vertical):
                 con.add_satisfying_tuples(sat_tuple)
                 csp.add_constraint(con)
         
-    # create binary difference between two same length vertical
-    for i in range(2, len(vertical_cons_length)):
-        same_length_cons = vertical_cons_length[i]
+    # create binary difference between two same length vertical subsections
+    for i in range(2, len(column_cons_length)):
+        same_length_cons = column_cons_length[i]
         
         for j in range(len(same_length_cons)):
             for k in range(j+1, len(same_length_cons)):
@@ -260,11 +141,4 @@ def keisuke_csp_model_1(initial_keisuke_board, horizontal, vertical):
     return (csp, variables)
                   
 
-def print_sudo_soln(var_array):
-    for row in var_array:
-        print([var.get_assigned_value() for var in row])
 
-
-def print_sudo(var_array):
-    for row in var_array:
-        print([var for var in row])
